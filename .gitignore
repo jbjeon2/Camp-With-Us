@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-/.metadata/
-=======
+camp/.gradle/
 /target/
 .classpath
 
@@ -130,4 +128,3 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse,windows
->>>>>>> 0307839f97055cb6affe439e404f3ecc32b8ca03

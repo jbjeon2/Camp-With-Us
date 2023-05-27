@@ -1,0 +1,199 @@
+/*로그인 페이지 스타일 문서*/
+
+* {
+    box-sizing: border-box;
+}
+
+header {
+    height: 20%;
+    display: flex;
+}
+
+header>section:nth-of-type(1) {
+    flex-basis: 30%;
+}
+
+header>section:nth-of-type(2) {
+    flex-basis: 40%;
+}
+
+header>section:nth-of-type(3) {
+    flex-basis: 30%;
+}
+
+/* 로고 */
+header>section:nth-of-type(1) {
+    display: flex;
+}
+
+#home-logo {
+    width: 150px;
+    height: auto;
+    /* 이미지는 width/height 둘 중 하나만 지정 시 
+    나머지 방향의 크기가 같은 비율로 지정됨 */
+}
+
+header>section:nth-of-type(3) {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+header .menu {
+    display: flex;
+    list-style-type: none;
+    
+}
+
+header .menu > li {
+    width: 150px;
+	height: 60px;
+    text-align: center;
+}
+
+.submenu{
+	display: none; /* 마지막에 적기 */
+    list-style: none;
+    padding-left: 0;
+}
+.submenu > li{
+	width: 150px;
+	height: 40px;
+}
+.submenu>li:hover>a{
+	text-decoration: underline;
+}
+
+
+header .mainImg {
+    width: 100%;
+    height: auto;
+}
+
+header .conent1 {
+    width: 100%;
+}
+
+/* footer */
+
+footer {
+    height: 20%;
+}
+
+/* footer 스타일 */
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+footer>p {
+    font-weight: bold;
+}
+
+footer>article>* {
+    font-size: 14px;
+}
+
+footer a {
+    color: black;
+    text-decoration: none;
+}
+
+footer span {
+    padding: 0 10px;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-wrapper {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    justify-content: space-evenly;
+}
+
+/*padding: 위 오른쪽 아래 왼쪽*/
+h1 {
+    margin: 0;
+    padding: 10px 10px 0px 10px;
+    text-align: center;
+}
+
+#login-form {
+    height: 150px;
+    padding-right: 10px;
+    padding-left: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-content: space-evenly;
+}
+
+/*justify-content:flex-end로 하니 오른쪽 정렬됨
+gpt가 알려준 text-align: right; 이 소스코드는 오른쪽 정렬이 안됐음
+왜...*/
+.email-checkbox-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/*horizen 사이에 'SNS 계정으로 로그인하기' 텍스트 넣고 싶은데,
+선이 안보임. 수정할 예정*/
+.hr-section {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.35);
+    font-size: 12px;
+    margin: 8px 0px;
+}
+
+.hr-section::before,
+.hr-section::after {
+	content: "";
+	flex-grow: 1;
+	background: rgba(0, 0, 0, 0.35);
+	height: 1px;
+	font-size: 0px;
+	line-height: 0px;
+	margin: 0px 16px;
+}
+
+/*로그인 버튼을 div태그로 감싸고,
+div태그에 class="login-btn" 속성 및 속성값 설정하고,
+div태그 속성 및 속성값에(class="login-btn")
+디자인을 주는 것이 최선인가?
+*/
+.login-btn > input {
+    width: 100%;
+    border: none;
+    background: #222;
+    color: white;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.social-loginbtns {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+  }

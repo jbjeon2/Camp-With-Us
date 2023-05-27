@@ -50,8 +50,8 @@
 						<h4 id="login">로그인</h4>
 						
 						<ul class="submenu">
-							<li>로그인</li>
-							<li>회원가입</li>
+							<li><a href="${contextPath}/login/loginPage">로그인</a></li>
+							<li><a href="${contextPath}/login/signUpPage">회원가입</a></li>
 							<li>아이디/비밀번호<br>찾기</li>
 						</ul>
 					</li>

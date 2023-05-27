@@ -12,13 +12,11 @@
      <link rel="stylesheet" href="../resources/css/main-style.css">
      
      <link rel="stylesheet" href="../resources/css/signUp-style.css">
- 
-     <script src="https://kit.fontawesome.com/a2e8ca0ae3.js" crossorigin="anonymous"></script>
  </head>
  <body>
      <main>
         <!-- hedaer include -->
-        <jsp:include page="/WEB-INF/views/common/header.jsp" />
+	 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 
          <!-- 회원가입  -->
@@ -149,7 +147,7 @@
      </main>
  
     <!-- footer include -->
-    <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+  	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 
     <!-- jQuery 라이브러리 추가(CDN) -->

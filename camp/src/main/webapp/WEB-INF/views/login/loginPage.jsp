@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Camping Reservation Website LoginPage</title>
-<link rel="stylesheet" href="resources/css/loginPage.css" >
+<link rel="stylesheet" href="/resources/css/loginPage.css" >
 <!-- 네이버 로그인과 관련된 기능을 사용하기 위해 필요한  "naverLogin_implicit-1.0.3.js" 파일을 불러옵니다. -->
 
 <!-- jquery를 사용하기 위해 제이쿼리 라이브러리를 불러옵니다. -->
@@ -51,8 +51,8 @@
 			<div class="social-loginbtns">
 
 				<div>
-					<a id="naver_id_login"><img src="${contextPath}/naverLoginbtn.png"></a>
-					</a>
+					<a href="javascript:;" id="naver_id_login" onclick="showLoginPopup();">
+					<img width="200" src="${contextPath}/resources/images/Nbtn.png"></a>
 				</div>
 				
 				<div></div>
@@ -71,13 +71,23 @@
 	<!-- (2) LoginWithNaverId Javscript SDK -->
 
 		<script type="text/javascript">
-			var naver_id_login = new naver_id_login("IDz2f9V7KDUGFQtrc5dB", "{contextPath}/naverLoginSuccess");
-			var state = naver_id_login.getUniqState();
-			naver_id_login.setButton("white", 2,40);
-			naver_id_login.setDomain("{contextPath}/loginPage");
-			naver_id_login.setState(state);
-			naver_id_login.setPopup();
-			naver_id_login.init_naver_id_login();
+// 			var naver_id_login = new naver_id_login("IDz2f9V7KDUGFQtrc5dB", "{contextPath}/naverLoginSuccess");
+// 			var state = naver_id_login.getUniqState();
+// 			naver_id_login.setButton("white", 2,40);
+// 			naver_id_login.setDomain("{contextPath}/loginPage");
+// 			naver_id_login.setState(state);
+// 			naver_id_login.setPopup();
+// 			naver_id_login.init_naver_id_login();
+			function showLoginPopup(){
+		        let uri = 'https://nid.naver.com/oauth2.0/authorize?' +
+		            'response_type=code' +                  // 인증과정에 대한 내부 구분값 code 로 전공 (고정값)
+		            '&client_id=IDz2f9V7KDUGFQtrc5dB' +     // 발급받은 client_id 를 입력
+		            '&state=NAVER_LOGIN_TEST' +             // CORS 를 방지하기 위한 특정 토큰값(임의값 사용)
+		            '&redirect_uri=http://localhost:8080/login/naverLoginSuccess';   // 어플케이션에서 등록했던 CallBack URL를 입력
+		
+		        // 사용자가 사용하기 편하게끔 팝업창으로 띄어준다.
+		        window.open(uri, "Naver Login Test PopupScreen", "width=450, height=600");
+		    }
 		</script>
 
 </body>
