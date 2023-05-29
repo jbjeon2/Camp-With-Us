@@ -46,7 +46,6 @@ public class LoginController {
 	
 	
 	private Logger logger = LoggerFactory.getLogger(LoginController.class);
-	
 	@Autowired // bean으로 등록된 객체 중 타입이 같거나, 상속 관계인 bean을 주입 해주는 역할
 	private LoginService service;   // -> 의존성 주입(DI, Dependency Injection)
 	
@@ -58,7 +57,125 @@ public class LoginController {
 	@GetMapping("/signUpPage")
 	public String signUpPage() {
 		return "login/signUpPage";
-	}	
+	}
+	
+	//회원가입 페이지 POST방법
+	/*@PostMapping("/signUpPage")
+	public String signUpPage() {
+		return "redirect:/";
+	}*/
+	//-----------------------------
+	@PostMapping("/signUp")
+	public String login( @ModelAttribute Member inputMember 
+						, Model model
+						, RedirectAttributes ra
+						, HttpServletResponse resp 
+						, HttpServletRequest req
+						, @RequestParam(value="saveId", required = false) String saveId ) {
+
+		logger.info("濡쒓렇�씤 湲곕뒫 �닔�뻾�맖");
+
+		Member loginMember = service.login(inputMember);
+
+		if(loginMember != null) {
+			model.addAttribute("loginMember", loginMember);
+
+			Cookie cookie = new Cookie("saveId", loginMember.getMemberEmail());
+			
+			if(saveId != null) {
+				
+				cookie.setMaxAge(60 * 60 * 24 * 365);
+				
+			} else {
+				cookie.setMaxAge(0);
+			}
+
+			cookie.setPath(req.getContextPath());
+
+			resp.addCookie(cookie);
+			
+		} else {
+
+			ra.addFlashAttribute("message", "�븘�씠�뵒 �삉�뒗 鍮꾨�踰덊샇媛� �씪移섑븯吏� �븡�뒿�땲�떎.");
+
+		}
+
+		return "redirect:/";
+	}
+
+	// 濡쒓렇�븘�썐
+	@GetMapping("/logout")
+	public String logout(
+						SessionStatus status) {
+		
+		// 濡쒓렇�븘�썐 == �꽭�뀡�쓣 �뾾�븷�뒗 寃�
+
+		logger.info("濡쒓렇�븘�썐 �닔�뻾�맖");
+
+		status.setComplete();
+		
+		return "redirect:/";
+		
+	}
+
+	// �쉶�썝 媛��엯 �솕硫� �쟾�솚
+	@GetMapping("/signUp")
+	public String signUp() {
+		return "member/signUp";
+	}
+
+	// �씠硫붿씪 以묐났 寃��궗
+	@ResponseBody  // ajax �쓳�떟 �떆 �궗�슜!
+	@GetMapping("/emailDupCheck")
+	public int emailDupCheck(String memberEmail) {
+		int result = service.emailDupCheck(memberEmail);
+
+		return result;
+		
+	}
+	
+	// �땳�꽕�엫 以묐났 寃��궗
+	@ResponseBody  
+	@GetMapping("/nicknameDupCheck")
+	public int nicknameDupCheck(String memberNickname) {
+		int result = service.nicknameDupCheck(memberNickname);
+		
+		return result;
+		
+	}
+	
+	
+	// �쉶�썝 媛��엯
+	@PostMapping("/signUp")
+	public String signUp( Member inputMember
+						, String[] memberAddress
+						, RedirectAttributes ra) {
+
+		inputMember.setMemberAddress(  String.join(",,", memberAddress)  );
+
+		if( inputMember.getMemberAddress().equals(",,,,") ) { // 二쇱냼媛� �엯�젰�릺吏� �븡�� 寃쎌슦
+			
+			inputMember.setMemberAddress(null); // null濡� 蹂��솚
+		}
+		
+		// �쉶�썝 媛��엯 �꽌鍮꾩뒪 �샇異�
+		int result = service.signUp(inputMember);
+		
+		String message = null;
+		String path = null;
+		
+		if(result > 0) { // �쉶�썝 媛��엯 �꽦怨�
+			message = "�쉶�썝 媛��엯�릺�뿀�뒿�땲�떎.";
+			path = "redirect:/"; // 硫붿씤�럹�씠吏�
+			
+		}else { // �떎�뙣
+			message = "�쉶�썝 媛��엯�뿉 �떎�뙣�븯�뀲�뒿�땲�떎.";
+			path = "redirect:/member/signUp"; // �쉶�썝 媛��엯 �럹�씠吏�
+		}
+		
+		ra.addFlashAttribute("message", message);
+		return path;
+	}
 }
 
 
