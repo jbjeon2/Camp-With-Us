@@ -1,6 +1,4 @@
 
-console.log(loc);
-console.log(theme);
 
 //  시 군 구 option List 
 function categoryChange(e) {
@@ -83,16 +81,11 @@ const campResult = document.getElementById("campResult");  // "위치+갯수" �
 selectCampBtn.addEventListener("click", function () {
 
   searchBox2.innerHTML = "";
-  console.log(searchVal1.value);
-  console.log(searchVal2.value);
-  console.log(state.value);
-  console.log(searchVal3.value);
-
 
   $.ajax({
     url: "https://apis.data.go.kr/B551011/GoCamping/basedList",
     data: {
-      numOfRows: 3000,
+      numOfRows: 4000,
       pageNo: 1,
       MobileOS: "ETC",
       MobileApp: "AppTest",
@@ -100,7 +93,6 @@ selectCampBtn.addEventListener("click", function () {
       _type: "json"
     },
     dataType: "json",
-
     
     success: function (result) {
       console.log("API 호출 성공");
@@ -187,7 +179,7 @@ selectCampBtn.addEventListener("click", function () {
             '<li>' +
             '<div class="camp_info_box">' +
             '<div class="img_box">' +
-            '<img src=' + item.firstImageUrl + ' alt="캠핑장 메인사진" class="imgSize">' +
+            '<img src=' + item.firstImageUrl + ' alt="이미지가 존재하지 않습니다." class="imgSize">' +
             '</div>' +
             '<div class="camp_info_text">' +
             '<h3 class="camp_info01">' +
@@ -201,7 +193,7 @@ selectCampBtn.addEventListener("click", function () {
             '<span>테마 &nbsp;&nbsp;&nbsp;: ' + item.induty + '</span><br>' +
             '<span class="camp_add">주소 &nbsp;&nbsp;&nbsp;: ' + item.addr1 + '</span><br>' +
             '<span class="camp_phone">연락처 : ' + item.tel + '</span>' +
-            '<a href="/camp/campList/detailList?campName='+item.facltNm.replaceAll(" ","") +'" class="reservation_button">예약하기</a>'+
+            '<a href="/camp/campList/detailList?campName='+item.facltNm.replaceAll(" ","")+'&viewType=1" class="reservation_button">예약하기</a>'+
           
             
             '</div>' +
@@ -282,16 +274,11 @@ window.onload = function() {
   }
 
   searchBox2.innerHTML = "";
-  console.log(searchVal1.value);
-  console.log(searchVal2.value);
-  console.log(state.value);
-  console.log(searchVal3.value);
-  
 
   $.ajax({
     url: "https://apis.data.go.kr/B551011/GoCamping/basedList",
     data: {
-      numOfRows: 3000,
+      numOfRows: 4000,
       pageNo: 1,
       MobileOS: "ETC",
       MobileApp: "AppTest",
@@ -396,7 +383,7 @@ window.onload = function() {
             '<span>테마 &nbsp;&nbsp;&nbsp;: ' + item.induty + '</span><br>' +
             '<span class="camp_add">주소 &nbsp;&nbsp;&nbsp;: ' + item.addr1 + '</span><br>' +
             '<span class="camp_phone">연락처 : ' + item.tel + '</span>' +
-            '<a href="/camp/campList/detailList?campName='+item.facltNm.replaceAll(" ","") +'" class="reservation_button">예약하기</a>'+
+            '<a href="/camp/campList/detailList?campName='+item.facltNm.replaceAll(" ","") +'&viewType=1" class="reservation_button">예약하기</a>'+
             '</div>' +
             '</div>' +
             '</li>' +

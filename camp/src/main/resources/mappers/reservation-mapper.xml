@@ -4,29 +4,48 @@
 
 <!-- 예약확인 예약테이블 조회용 -->
 	<resultMap type="reservation" id="reservation_rm">
-		<id property="name" column="RESERVATION_NO" />
+		<id property="reservNo" column="RESERVATION_NO" />
 		<result property="campingName" column="CAMPING_NM" />
 		<result property="buyerName" column="RESERVATION_P" />
 		<result property="amount" column="PAYMENT" />
 		<result property="people" column="RESERVATION_NP" />
+		<result property="reservDate" column="RESERVATION_DT" />
+		<result property="reservSelDate" column="SELECTDATE" />
+		<result property="reservSt" column="RESERVATION_ST" />
 	</resultMap>
 
 
-	<select id="selectPrice" resultType="_int">
+	<!-- 가격조회 -->
+	<!-- 성수기 -->
+	<select id="selectPriceP" resultType="_int">
 	SELECT CAMPING_PR FROM PRICE 
-	WHERE PEAK_SEASON = 'Y'
+	WHERE PEAK_SEASON = 'Y' 
 	</select>
 	
+	<!-- 비성수기 -->
+	<select id="selectPriceNp" resultType="_int">
+	SELECT CAMPING_PR FROM PRICE 
+	WHERE PEAK_SEASON = 'N' 
+	</select>
+	
+	
+	<!-- 예약정보 삽입 -->
 	<insert id="reservationInfo" parameterType="reservation">
 		INSERT INTO RESERVATION(
-		RESERVATION_NO, CAMPING_NM, RESERVATION_P, RESERVATION_NP, PAYMENT) 
+		RESERVATION_NO, CAMPING_NM, RESERVATION_P, RESERVATION_DT, RESERVATION_NP, PAYMENT, SELECTDATE) 
 		VALUES(SEQ_RESERVATION_NO_S.NEXTVAL,
-		#{campingName}, #{buyerName}, #{people}, #{amount})
+		#{campingName}, #{buyerName}, SYSDATE, #{people}, #{amount}, #{reservSelDate})
 	</insert>
 
+	<!-- 예약조회 -->
 	<select id="reservationSelect" resultMap="reservation_rm">
 		SELECT * FROM RESERVATION
 	</select>
 
+	<!-- 예약취소 -->
+	<update id="reservationState" parameterType="reservation">
+		UPDATE RESERVATION  SET RESERVATION_ST  = 'N'
+		WHERE RESERVATION_NO  = #{reservNo}
+	</update>
 
 </mapper>

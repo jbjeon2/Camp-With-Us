@@ -5,6 +5,7 @@ const searchOption = document.getElementsByClassName("searchOption");
 
 var loginMember = sessionStorage.getItem("loginMember");
 
+
 // 지역 선택 팝업창
 function selectLoc() {
     const options = "width=480, height=600, top=50, left=400";

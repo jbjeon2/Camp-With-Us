@@ -1,8 +1,6 @@
 package team.project.camp.detail.model.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,38 +16,36 @@ public class ReservationServiceImpl implements ReservationService {
 	@Autowired
 	private ReservationDAO dao;
 
-	/**
-	 *가격계산
-	 */
+	//가격계산
+	//성수기
 	@Override
-	public int selectPrice() {
-		return dao.selectPrice();
+	public int selectPriceP(String month) {
+		return dao.selectPriceP(month);
+	}
+	
+	//비성수기
+	@Override
+	public int selectPriceNp(String month) {
+		return dao.selectPriceNp(month);
 	}
 
-	/**
-	 *예약정보
-	 */
+	//예약정보 삽입
 	@Override
 	public int reservationInfo(Reservation reservation) {
 		return dao.reservationInfo(reservation);
 	}
 
-//	@Override
-//	public Map<String, Object> reservationSelect() {
-//
-//		Map<String, Object> map = new HashMap<>();
-//		
-//		dao.reservationSelect();
-//		return map;
-//	}
-
-	//예약확인 
+	//예약조회
 	@Override
 	public List<Reservation> reservationSelect() {
 		return dao.reservationSelect();
 	}
 
-
+	//예약취소
+	@Override
+	public int reservationState(int reservNo) {
+		return dao.reservationState(reservNo);
+	}
 
 
 }

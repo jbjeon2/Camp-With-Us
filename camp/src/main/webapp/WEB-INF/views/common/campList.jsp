@@ -92,11 +92,12 @@
 
                
                 <div class="camp_search_list" id="searchBox2">
-                    <ul>
+                    <h2>캠핑장을 검색해주세요.</h2>
+<!--                     <ul>
                         <li>
                             <div class="camp_info_box">
                                 <div class="img_box">
-                                    <img src="kyj.jpg" alt="김영진" class="imgSize">
+                                    <img src="" alt="김영진" class="imgSize">
                                 </div>
                                 <div class="camp_info_text">
                                     <h3 class="camp_info01">
@@ -108,19 +109,15 @@
                                     </span><br>
                                     <span class="camp_add">주소 &nbsp;&nbsp;&nbsp;:  서울광역시 서울구 서울동 서울</span><br>
                                     <span class="camp_phone">연락처 : 010-6857-6333</span>
-                                   
                                 </div>
                             </div>
                         </li>
-                    </ul>       
+                    </ul>  -->      
                 </div>
             </section>
 
 
-                    <!--  <div class="pageNation">페이지네이션 자리입니다.</div> -->
-
            <div id="pagination" class="pagination">
-
           </div>
         </div>
     

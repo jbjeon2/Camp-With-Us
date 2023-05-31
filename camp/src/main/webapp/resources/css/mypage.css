@@ -1,7 +1,7 @@
 
 /* 마이페이지 영역 */
 .myPage-content{
-    width: 1140px;
+    width: 1650px;
     height: auto;
     margin: 25px;
 
@@ -13,7 +13,7 @@
 .left-side{
     position: sticky;
     top : 20px;
-    width: 25%;
+    width: 15%;
     
     /* border-right : 2px solid gray; */
     text-align: center;
@@ -51,7 +51,7 @@
 
 /* 마이페이지 공통 부분 */
 .myPage-main{
-    width: 75%;
+    width: 85%;
     padding: 0 50px;
     border-left : 2px solid #ddd;
 }

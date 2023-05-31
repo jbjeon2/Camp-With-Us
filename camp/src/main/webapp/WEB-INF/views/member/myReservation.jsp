@@ -36,12 +36,15 @@
                     
                     <thead>
                         <tr>
-                            <th>예약 번호</th>
+                            <th>예약번호</th>
                             <th>캠핑장 이름</th>
                             <th>예약자</th>
-                            <th>예약일</th>
-                            <th>예약 인원 수</th>
+                            <th>결제일</th>
+                            <th>인원수</th>
                             <th>결제 금액</th>
+                            <th>예약일</th>
+                            <th>예약상태</th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -67,11 +70,31 @@
                                         <td>${reservation.reservDate}</td>
                                         <td>${reservation.people}</td>
                                         <td>${reservation.amount}</td>
+                                        <td>${reservation.reservSelDate}</td>
+                                        <c:choose>
+                                            <c:when test="${reservation.reservSt == '89'}">
+                                                <td style="color: blue;">예약</td>
+                                                <td><button type="button" onclick="reservCancel('${reservation.reservNo}')">예약취소</button></td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td style="color: red;">취소</td>
+                                                <td></td>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        
+                                        
+                                        
+
                                     </tr>
+
                                 </c:forEach>
 
                             </c:otherwise>
+                            
+
                         </c:choose>
+
+
                     </tbody>
                 </table>
             </div>
@@ -82,10 +105,23 @@
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
+
+   
+   <script>
+  var reservNos = [];
+
+  <c:forEach var="reservation" items="${reservationList}">
+    reservNos.push("${reservation.reservNo}");
+  </c:forEach>
+ 
+   </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 
     <script src="${contextPath}/resources/js/mypage.js"></script>
+
+ 
 
 </body>
 </html>

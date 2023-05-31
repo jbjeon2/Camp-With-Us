@@ -114,19 +114,60 @@ function printAlert(el, message){ // 매개변수 el은 요소
 
 // 회원 정보 수정 하기 위한 비밀번호 입력
 const confirmBtn = document.getElementById("confirm-btn");
-var confirm = "n";
-localStorage.setItem("confirm", confirm);
+var confirmPw = "n";
+localStorage.setItem("confirmPw", confirmPw);
 if(confirmBtn) {
     confirmBtn.addEventListener("click", function() {
 
         // 비밀번호 확인 ajax 실행
 
         // 성공 시
-        localStorage.setItem("confirm", 'y');
+        localStorage.setItem("confirmPw", 'y');
         alert("비밀번호가 일치합니다.");
         
-        console.log(confirm);
+        console.log(confirmPw);
         location.reload();
 
     });
 }
+
+//예약 취소
+function reservCancel(reservNo) {
+
+    console.log("예약번호 : " + reservNo);
+    console.log("예약취소(reservCancel) 함수 실행");
+
+    var cf = window.confirm("정말 예약을 취소하시겠습니까?\n취소시 결제금액은 영업일 기준 2~3일내에 자동 환불 됩니다.");
+
+    if(cf) {
+
+        $.ajax({
+            url: "reservationState", 
+            type: "POST",
+            data: {"reservNo" : reservNo},
+        
+            success: function(result) {
+               
+                if(result > 0) {
+                    console.log("예약정보 전송완료");
+                    alert("예약이 취소되었습니다.");
+                    location.reload();
+                }else {
+                    console.log("예약정보 전송실패");
+                    alert("예약 취소에 실패하였습니다.");
+                }
+            },
+            error: function() {
+                console.log("예약취소 ajax 에러발생");
+            }
+        });
+        
+        
+    } else {
+        console.log("예약취소 기능 취소");
+    }
+                            
+}
+
+
+   

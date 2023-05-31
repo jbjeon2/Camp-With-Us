@@ -24,19 +24,18 @@ public class MainController {
 	public String popUpTheme() {
 		return "common/selectTheme";
 	}
-	
 	// main --> campList 이동 .
 	@GetMapping("/campList")
-	public String campList(  
+	public String campList(
 				@RequestParam(value = "loc", required = false , defaultValue = "") String loc,
 				@RequestParam(value = "theme", required = false , defaultValue = "") String theme,
 				Model model
 			) {
-		
+
 		model.addAttribute("loc", loc);
 		model.addAttribute("theme", theme);
-		
+
 		return "common/campList";
-	
+
 	}
 }

@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +10,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/main.css">
     <link rel="stylesheet" href="${contextPath}/resources/css/reservation.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/calendarStyle.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://kit.fontawesome.com/a2e8ca0ae3.js" crossorigin="anonymous"></script>
@@ -24,20 +24,19 @@
         <form class="formsize">            
 
 
-            <div class="subject">**캠핑장 예약1</div>
+            <div class="subject">${campName} 캠핑장 예약</div>
     
 
 
 
             <div class="calendar1">달력
 
-
-
-
+                <div class="container">
+                    <div class="left">
                         <div class="calendar">
                             <div class="month">
                                 <i class="fa fa-angle-left prev"></i>
-                                <div class="date">may 2023</div>
+                                <div class="date"></div>
                                 <i class="fa fa-angle-right next"></i>
                             </div>
                             <div class="weekdays">
@@ -50,50 +49,42 @@
                                 <div>sats</div>
                             </div>
                             <div class="days"> <!-- js 이용 달력 만들예정 -->
-                                <div class="day prev-date">30</div>
-                                <div class="day prev-date">31</div>
-                                <div class="day">1</div>
-                                <div class="day">2</div>
-                                <div class="day">3</div>
-                                <div class="day">4</div>
-                                <div class="day">5</div>
-                                <div class="day">6</div>
-                                <div class="day">7</div>
-                                <div class="day event">8</div>
-                                <div class="day">9</div>
-                                <div class="day">10</div>
-                                <div class="day">11</div>
-                                <div class="day">12</div>
-                                <div class="day">13</div>
-                                <div class="day event active">14</div>
-                                <div class="day today">15</div>
-                                <div class="day">16</div>
-                                <div class="day">17</div>
-                                <div class="day">18</div>
-                                <div class="day">19</div>
-                                <div class="day">20</div>
-                                <div class="day">21</div>
-                                <div class="day">22</div>
-                                <div class="day">23</div>
-                                <div class="day">24</div>
-                                <div class="day">25</div>
-                                <div class="day">26</div>
-                                <div class="day">27</div>
-                                <div class="day">28</div>
-                                <div class="day">29</div>
-                                <div class="day">30</div>
-                                <div class="day next-date">1</div>
-                                <div class="day next-date">2</div>
-                                <div class="day next-date">3</div>
+                                
                             </div>
+                            <button class="reselect" type="button">다시 선택하기</button>
                             <div class="goto-today">
                                 <div class="goto">
                                     <input type="text" placeholder="mm/yyyy" class="date-input">
-                                    <button class="goto-btn">go</button>
+                                    <button class="goto-btn" type="button">go</button>
                                 </div>
-                                <button class="today-btn">today</button>
+                                <button class="today-btn" type="button">today</button>
                             </div>
                         </div>
+                    </div>
+            
+            
+                    <div class="right">
+                        <div class="today-date">
+                            <div class="event-day">선택한 날짜</div>
+                        </div>
+                        <div class="checkIn">
+                            <div class="checkin">CheckIn</div>
+                            <div class="first-day">
+                                <div class="pickMonth"></div>월 <div class="pickDay"></div>일
+                            </div>
+                        </div>
+                        <div class="checkOut">
+                            <div class="checkout">CheckOut</div>
+                            <div class="last-day">
+                                <span class="pickMonth"></span>월 <span class="pickDay"></span>일
+                            </div>
+                        </div>
+                        <div class="TOTAL">
+                            <div class="total">총 기간</div>
+                            <div class="total-days"> <div class="dayBetween"></div><div class="dayBetween"></div></div>
+                        </div>
+                    </div>
+                </div>
                
 
 
@@ -110,6 +101,7 @@
 
                     성인
                     <select class="adultSelect">
+                        <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -140,7 +132,8 @@
             <br>
             <br>성수기(6~8월) 가격: 1인 기준 성인 30000, 아이 15000
             <br>비성수기(6~8월 제외한 달) 기본가격: 1인 기준 성인 20000, 아이 10000
-            <br><br><br>	
+            <br>총 숙박기간 : <span class="a"></span>
+            <br><br>	
             	<div id="priceSum"></div>
             </div>
             <br>
@@ -156,37 +149,54 @@
     
 let priceValue;
 let people;
+var campName = "${campName}";
 
-
+//결제금액
 document.addEventListener("DOMContentLoaded", function() {
+            const month = localStorage.getItem("Month");
             const adultSelect = document.querySelector(".adultSelect");
             const childrenSelect = document.querySelector(".childrenSelect");
             const priceElement = document.getElementById("priceSum");
-    
+            const totalday = localStorage.getItem("totalDay");
             function calculatePrice() {
                 $.ajax({
                     url: "selectPrice",
                     type: "GET",
+                    data: {"month" : Number(selectMonth[0].innerText)},
                     success: function(price) {
                         console.log(price);
-    
+                        console.log("몇월달 ? " + Number(selectMonth[0].innerText));
                         let childrenPrice = price * 0.5;
                         let adultOptionValue = adultSelect.options[adultSelect.selectedIndex].value;
                         let adultTotalPrice = price * adultOptionValue;
-    
+                        
+                        
+
                         let childrenOptionValue = childrenSelect.options[childrenSelect.selectedIndex].value;
                         let childrenTotalPrice = childrenPrice * childrenOptionValue;
                         
                         let totalPeople = Number(adultOptionValue) + Number(childrenOptionValue);
+                        
+                        let totalPrice = 0;
                        
-                        let totalPrice = adultTotalPrice + childrenTotalPrice;
+
+                        if(localStorage.getItem("totalDay") == null) {
+                            totalPrice = (adultTotalPrice + childrenTotalPrice)*0;
+                        } else {
+                            totalPrice = (adultTotalPrice + childrenTotalPrice)*localStorage.getItem("totalDay");
+                        }
                         priceElement.textContent = "총 가격: " + totalPrice + "원";
                         priceValue = totalPrice;
                         people = totalPeople;
                         
-                        console.log(people);
+                        
+/*                         console.log(people);
                         console.log(adultOptionValue);
-                        console.log(childrenOptionValue);
+                        console.log(childrenOptionValue); */
+                        console.log("스토리지" + localStorage.getItem("totalDay"))
+                       
+
+                        
 
                     },
                     error: function() {
@@ -204,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-
+//결제화면
 function requestPay() {
             console.log("requestPay함수 실행");
             
@@ -214,7 +224,7 @@ function requestPay() {
                     pg: 'kcp.A52CY',
                     pay_method: 'card',
                     merchant_uid: 'merchant_' + new Date().getTime(),
-                    name: '캠핑장이름',
+                    name: campName,
                     amount: priceValue,
                     buyer_email: 'CampingBoeNaeJoe@gmail.com',
                     buyer_name: '구매자이름',
@@ -230,12 +240,22 @@ function requestPay() {
                   console.log("성공");
                   alert("결제가 완료되었습니다");
 
-                  let campingName = '캠핑장이름';
+                  let selectfirstmonth = document.querySelectorAll(".pickMonth")[0].textContent;
+                  let selectfirstday = document.querySelectorAll(".pickDay")[0].textContent;
+                  let selectlastmonth = document.querySelectorAll(".pickMonth")[1].textContent;
+                  let selectlastday = document.querySelectorAll(".pickDay")[1].textContent;
+                  console.log(selectfirstmonth);
+                  console.log(selectfirstday);
+                  console.log(selectlastmonth);
+                  console.log(selectlastday);
+                  let selectDate = selectfirstmonth + '월 ' + selectfirstday +'일 - ' + selectlastmonth +'월 ' + selectlastday + '일'
+                  console.log(selectDate)
 
                  $.ajax({
                     url: "reservationInfo", 
                     type: "POST",
-                    data: { "campingName" : campingName,
+                    data: { "campingName" : campName,
+                            "reservSelDate" : selectDate,
                             "buyerName" : rsp.buyer_name,
                             "amount" : priceValue,
                             "people" : people},
@@ -265,14 +285,11 @@ function requestPay() {
 </script>
    
 
-
  <!-- iamport.payment.js -->
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 	 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-
    
-    <script src="${contextPath}/resources/js/reservation.js"></script>
-
+    <script src="${contextPath}/resources/js/calendar.js"></script>
 
  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
