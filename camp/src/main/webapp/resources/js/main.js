@@ -28,15 +28,15 @@ window.addEventListener('scroll', function () {
 
 
 // 검색 버튼 클릭 시 캠프 리스트 페이지 이동
-function searchCamp() {
+// function searchCamp() {
 
-    location.href = "/camp/campList/?loc=" + selLoc.value + "&theme=" + selTheme.value + "&campName=" + inputCampName.value;
-    // location.href="camp/campList";
+//     location.href = "/camp/campList/?loc=" + selLoc.value + "&theme=" + selTheme.value + "&campName=" + inputCampName.value;
+//     // location.href="camp/campList";
 
-    selLoc.value = "";
-    selTheme.value = "";
-    inputCampName.value = "";
-}
+//     selLoc.value = "";
+//     selTheme.value = "";
+//     inputCampName.value = "";
+// }
 
 
 if (login) {
