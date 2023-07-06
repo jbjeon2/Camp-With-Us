@@ -31,13 +31,12 @@ public class NaverLoginService implements CommonLoginService{
 
 	   //clientId, clientSecret ->네이버 개발자 센터에서 발급 받고, 기재
 	   //콜백url와 서비스 url(->여기서 말고, jsp페이지에서 수정해야함)도 수정해야함. 입력한 거 복붙하면됨.
-	   protected final String clientId = "olUvYEgXTwnvQN94ySBM";
+	   protected final String clientId = "";
 	   // 아이디 영진꺼입니다, 각자가 받아서 입력해야해요
 	   // clientId , clientSecret 두개 .
-	   protected final String clientSecret = "bZcEd8S6uS";
+	   protected final String clientSecret = "";
 	   protected final String authUri = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=%s&client_secret=%s&redirect_uri=%s&code=%s&state=%s";
-//	   protected final String callbackUri = "http://localhost:8080";
-     protected final String callbackUri = "http://3.37.254.218:8080/camp/login/naverLoginSuccess";
+	   protected final String callbackUri = "http://ec2-3-37-254-218.ap-northeast-2.compute.amazonaws.com:8080/camp/login/naverLoginSuccess";
 	   protected final String profileUri = "https://openapi.naver.com/v1/nid/me";
 
 	   public Member doAuth(HttpServletRequest request, HttpServletResponse response) throws Exception {

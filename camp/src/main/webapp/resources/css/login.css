@@ -354,7 +354,11 @@ cursor: pointer;
     font-weight: bolder !important;
     font-size: 60px;
   }
-    
+  img#member-profile1 {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+}
 
 
   .g-5,

@@ -1,5 +1,4 @@
 
-var contextPath2 = contextPath;
 
 
 // 상세조회, 게시글 작성 - 목록으로 버튼
@@ -208,6 +207,7 @@ window.onload = function() {
 }
 }
 
+var contextPath2 = contextPath;
 
 const myPageList = document.getElementsByClassName("myPage-listBoard");
 

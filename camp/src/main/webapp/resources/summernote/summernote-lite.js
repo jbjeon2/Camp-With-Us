@@ -8652,7 +8652,7 @@ var ImageDialog_ImageDialog = /*#__PURE__*/function () {
   ImageDialog_createClass(ImageDialog, [{
     key: "initialize",
     value: function initialize() {
-      var imageLimitation = '';
+      var imageLimitation = '최대 파일 크기 : 2MB';
 
       if (this.options.maximumImageFileSize) {
         var unit = Math.floor(Math.log(this.options.maximumImageFileSize) / Math.log(1024));

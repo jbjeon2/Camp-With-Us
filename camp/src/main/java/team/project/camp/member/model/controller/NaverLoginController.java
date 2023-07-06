@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.extern.slf4j.Slf4j;
 import team.project.camp.member.model.service.MemberService;
@@ -28,7 +29,7 @@ public class NaverLoginController {
     private MemberService service;
 
     @GetMapping("/naverLoginSuccess")
-    public String oauth( HttpServletRequest request,  HttpServletResponse response, Model model) throws Exception {
+    public String oauth( HttpServletRequest request,  HttpServletResponse response, Model model, RedirectAttributes ra) throws Exception {
 
        Member loginMember = new Member();
 
@@ -40,6 +41,7 @@ public class NaverLoginController {
 
           if ( result == 0 ) {                                // DB 저장된 값이 없을때 .
         	 result = service.naverLoginInsert(loginMember);  // DB 에 저장.
+        	 ra.addFlashAttribute("message", "환영합니다. 회원가입이 완료되었습니다.");
           }
 
           Member naverMember = service.naverMember(loginMember);
@@ -61,5 +63,7 @@ public class NaverLoginController {
           throw e;
        }
     }
+    
+    
 
 }

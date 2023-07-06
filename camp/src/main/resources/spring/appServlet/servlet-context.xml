@@ -15,6 +15,9 @@
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 
+	<!-- summernote 리소스 설정 -->
+	<resources mapping="/summernote/**" location="/WEB-INF/views/summernote/" />
+
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
@@ -22,8 +25,7 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="team.project.camp" />
-
-
+	
 
 	<!-- 서머노트 -->
 	<!-- 스프링에서 기본으로 제공하는 multipartResolver는 CommonsMultipartResolver 이므로,

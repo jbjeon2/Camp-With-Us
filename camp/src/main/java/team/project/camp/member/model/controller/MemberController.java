@@ -1,6 +1,8 @@
 package team.project.camp.member.model.controller;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -8,9 +10,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -24,15 +30,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+
+import lombok.extern.slf4j.Slf4j;
 import team.project.camp.member.model.service.MemberService;
+import team.project.camp.member.model.vo.GoogleLoginResponse;
+import team.project.camp.member.model.vo.GoogleOAuthRequest;
 import team.project.camp.member.model.vo.Member;
 
 @Controller // 생성된 bean이 Contorller임을 명시 + bean 등록
 @RequestMapping("/member")
 @SessionAttributes({"loginMember"}) // Model에 추가된 값의 key와 어노테이션에 작성된 값이 같으면
-									// 해당 값을 session scope 이동시키는 역할*/
+@Slf4j								// 해당 값을 session scope 이동시키는 역할*/
 public class MemberController {
 
 	Logger logger = LoggerFactory.getLogger(MemberController.class);
@@ -40,6 +55,12 @@ public class MemberController {
 	@Autowired // bean으로 등록된 객체 중 타입이 같거나, 상속 관계인 bean을 주입 해주는 역할
 	private MemberService service;   // -> 의존성 주입(DI, Dependency Injection)
 
+	private String googleAuthUrl = "https://oauth2.googleapis.com";
+    private String googleLoginUrl = "https://accounts.google.com";
+    private String googleRedirectUrl = "http://ec2-3-37-254-218.ap-northeast-2.compute.amazonaws.com:8080/camp/member/login/oauth_google_check";
+    private String googleClientId = "";
+    private String googleClientSecret = "";
+	
 	
 	@GetMapping("/login")
 	public String loginPage(HttpServletRequest req) {
@@ -156,9 +177,128 @@ public class MemberController {
 		return loginCheck;
 
 	}
+	
+	// 구글 로그인창 호출
+    // http://localhost:8080/login/getGoogleAuthUrl
+    @GetMapping(value = "/login/getGoogleAuthUrl")
+    public ResponseEntity<?> getGoogleAuthUrl(HttpServletRequest request) throws Exception {
+
+        String reqUrl = googleLoginUrl + "/o/oauth2/v2/auth?client_id=" + googleClientId + "&redirect_uri=" + googleRedirectUrl
+                + "&response_type=code&scope=email%20profile%20openid&access_type=offline";
+
+        log.info("myLog-LoginUrl : {}",googleLoginUrl);
+        log.info("myLog-ClientId : {}",googleClientId);
+        log.info("myLog-RedirectUrl : {}",googleRedirectUrl);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create(reqUrl));
+
+        //1.reqUrl 구글로그인 창을 띄우고, 로그인 후 /login/oauth_google_check 으로 리다이렉션하게 한다.
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+    }
+
+    // 구글에서 리다이렉션
+    @GetMapping(value = "/login/oauth_google_check")
+    public String oauth_google_check(HttpServletRequest request,
+                                     @RequestParam(value = "code") String authCode,
+                                     HttpServletRequest req,
+                                     Model model, RedirectAttributes ra,
+                                     HttpServletResponse response) throws Exception{
+
+        //2.구글에 등록된 레드망고 설정정보를 보내어 약속된 토큰을 받위한 객체 생성
+        GoogleOAuthRequest googleOAuthRequest = GoogleOAuthRequest
+                .builder()
+                .clientId(googleClientId)
+                .clientSecret(googleClientSecret)
+                .code(authCode)
+                .redirectUri(googleRedirectUrl)
+                .grantType("authorization_code")
+                .build();
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        //3.토큰요청을 한다.
+        ResponseEntity<GoogleLoginResponse> apiResponse = restTemplate.postForEntity(googleAuthUrl + "/token", googleOAuthRequest, GoogleLoginResponse.class);
+        //4.받은 토큰을 토큰객체에 저장
+        GoogleLoginResponse googleLoginResponse = apiResponse.getBody();
+
+        log.info("responseBody {}",googleLoginResponse.toString());
+
+
+        String googleToken = googleLoginResponse.getId_token();
+
+        //5.받은 토큰을 구글에 보내 유저정보를 얻는다.
+        String requestUrl = UriComponentsBuilder.fromHttpUrl(googleAuthUrl + "/tokeninfo").queryParam("id_token",googleToken).toUriString();
+        System.out.println("requestUrl " + requestUrl);
+      
+        //6.허가된 토큰의 유저정보를 결과로 받는다.
+        String resultJson = restTemplate.getForObject(requestUrl, String.class);
+        System.out.println("resultJson " + resultJson);
+      
+//        Gson gson = new Gson();
+//        
+//        String resultJson1 = gson.toJson(resultJson);
+//
+//        
+//        System.out.println("resultJson1 " + resultJson1);
+        
+        
+        // JSON 파싱을 위한 ObjectMapper 생성
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(resultJson);
+
+        // 이메일 값을 추출
+        String email = jsonNode.get("email").asText();
+
+        // 이후에 필요한 작업을 수행하면 됩니다.
+        System.out.println("Email: " + email);
+        
+     // "name" 필드의 값을 추출
+        String name = jsonNode.get("name").asText();
+        
+        System.out.println("name: " + name);
+        
+        //로그인 DB삽입 및 조회
+        Member member = new Member();
+		member.setMemberNickname(name);
+		member.setMemberEmail(email);
+        
+		Member googleLoginMember = service.googleLogin(member);
+
+		System.out.println("googleLoginMember :  " + googleLoginMember);
+        
+		//--------------------------------------------------------------------
+		if ( googleLoginMember == null ) {
+			int result = service.googleKakaoInsert(member);
+			if(result>0) {
+				logger.info("구글 로그인 정보 DB 삽입 성공");
+				Member googleLoginMember2 = service.googleLogin(member);
+				model.addAttribute("loginMember", googleLoginMember2);
+				ra.addFlashAttribute("message", "환영합니다. 회원가입이 완료되었습니다.");
+			}else {
+				logger.info("구글 로그인 정보 DB 삽입 실패");
+			}
+		} else {  // 안에 같은이메일이 존재할때.
+			int result = service.googleEmailCheck(member);  // 이메일,닉네임값으로 select 다시돌린다.
+
+			if ( result > 0 ) {   // 이메일,닉네임값으로 select 성공시
+
+				logger.info("기존 로그인 실행 ");
+				model.addAttribute("loginMember", googleLoginMember);
+			
+			} else {
+				logger.info("중복회원입니다.");
+				
+			}
+		}
+		
+		//--------------------------------------------------------------------
+        
+        String prevPage = (String) req.getSession().getAttribute("prevPage");
+        
+        return "redirect:"+ prevPage;
+    }
 	//----------------------구글로그인 end----------------------------------
-
-
 
 	//----------------------카카오로그인 start----------------------------------
 	@ResponseBody
@@ -191,6 +331,7 @@ public class MemberController {
 				logger.info("카카오 로그인 정보 DB 삽입 성공");
 				Member kakaoLoginMember2 = service.googleKakaoLogin(googleKakaoMember);
 				model.addAttribute("loginMember", kakaoLoginMember2);
+				
 				loginCheck = 0;
 				return loginCheck;
 			}else {
@@ -203,11 +344,11 @@ public class MemberController {
 
 				logger.info("기존 로그인 실행 ");
 				model.addAttribute("loginMember", kakaoLoginMember);
-				loginCheck = 0;
+				loginCheck = 1;
 				return loginCheck;
 			} else {
 				logger.info("중복회원입니다.");
-				loginCheck = 1;
+				loginCheck = 2;
 				return loginCheck;
 			}
 		}
@@ -327,7 +468,7 @@ public class MemberController {
 	    	"<p>안녕하세요 고객님!<br>발급된 임시 비밀번호는"
 	    	+ randomPassword
 	    	+"입니다.<br>로그인하고 비밀번호를 변경해주세요.</p>"; //본문
-	    String from = "camping@camp.com"; //보내는사람 이메일주소
+	    String from = "campwithus@gmail.com"; //보내는사람 이메일주소
 	    String to = memberEmail;
 
 	    try {

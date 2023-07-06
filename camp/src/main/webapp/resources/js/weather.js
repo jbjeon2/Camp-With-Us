@@ -201,6 +201,37 @@ $.getJSON(
                       case "흐림":
                       info1[a].innerHTML ="<img src='"+ `${contextPath}` + "/resources/images/cloudMany.jpg' width= '65px' height= '65px'>"
                       break;
+                      case "구름많고 비":
+                        info1[a].innerHTML = "<img src='"+ `${contextPath}` + "/resources/images/rain.jpg'" + "width= '65px' height= '65px'>"
+                        break;
+
+                      case "구름많고 눈":
+                        info1[a].innerHTML = "<img src='"+ `${contextPath}` + "/resources/images/snowy.jpg' width= '65px' height= '65px'>"
+                        break;
+
+                      case "구름많고 비/눈":
+                        info1[a].innerHTML = "<img src='"+ `${contextPath}` + "/resources/images/snowy.jpg' width= '65px' height= '65px'>"
+                        break;
+
+                      case "구름많고 소나기":
+                        info1[a].innerHTML = "<img src='"+ `${contextPath}` + "/resources/images/rain.jpg' width= '65px' height= '65px'>"
+                        break;
+
+                      case "흐리고 비":
+                        info1[a].innerHTML = "<img src='"+ `${contextPath}` + "/resources/images/rain.jpg' width= '65px' height= '65px'>"
+                        break;
+
+                      case "흐리고 눈":
+                        info1[a].innerHTML = "<img src='"+ `${contextPath}` + "/resources/images/snowy.jpg width= '65px' height= '65px'>"
+                        break;
+
+                      case "흐리고 비/눈":
+                        info1[a].innerHTML = "<img src='"+ `${contextPath}` + "/resources/images/snowy.jpg' width= '65px' height= '65px'>"
+                        break;
+                      
+                      case "흐리고 소나기":
+                        info1[a].innerHTML = "<img src='"+ `${contextPath}` + "/resources/images/rain.jpg' width= '65px' height= '65px'>"
+                        break;
                     }
                     rp[a].innerHTML = "강수 확률" +"<br>" + rp3[i] +" %";
 

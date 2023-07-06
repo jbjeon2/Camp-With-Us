@@ -68,7 +68,7 @@ public interface MemberService {
 	 */
 	public abstract Member naverMember(Member loginMember);
 
-
+	
 
 	/**구글 카카오 로그인
 	 * @param googleMember
@@ -89,6 +89,20 @@ public interface MemberService {
 	 * @return
 	 */
 	public abstract int googleKakaoEmailCheck(Member googleKakaoMember);
+
+	
+	/**구글 로그인
+	 * @param email
+	 * @param name
+	 * @return
+	 */
+	public abstract Member googleLogin(Member member);
+
+	/**구글 중복이메일 방지, 이메일 닉네임 select
+	 * @param member
+	 * @return
+	 */
+	public abstract int googleEmailCheck(Member member);
 
 
 

@@ -44,7 +44,7 @@
     <!-- JavaScript용 Facebook SDK 정규식 추가 -->
 
     <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v17.0&appId=804019604627586&autoLogAppEvents=1" nonce="Ch1e3BJs"></script>
+<script async defer crossorigin="anonymous" src="" nonce="Ch1e3BJs"></script>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 

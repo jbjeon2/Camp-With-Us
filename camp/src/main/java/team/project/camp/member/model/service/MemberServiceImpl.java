@@ -147,6 +147,18 @@ public class MemberServiceImpl implements MemberService {
 		return dao.googleKakaoEmailCheck(googleKakaoMember);
 	}
 
+	//구글 로그인
+	@Override
+	public Member googleLogin(Member member) {
+		Member googleLoginMember = dao.googleLogin(member);
+		return googleLoginMember;
+	}
+
+	@Override
+	public int googleEmailCheck(Member member) {
+		return dao.googleEmailCheck(member);
+	}
+
 
 }
 

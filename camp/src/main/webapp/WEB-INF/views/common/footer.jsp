@@ -39,8 +39,16 @@
             <div class="col-lg-3 col-md-6 footer-links">
             <h4>Our Social </h4>
             <ul>
-                <li><i class="bx bx-chevron-right"></i> <a href="${contextPath}/member/login">로그인</a></li>
-                <li><i class="bx bx-chevron-right"></i> <a href="${contextPath}/member/signUpCheck">회원가입</a></li>
+                <c:choose>
+                    <c:when test="${loginMember == null}">
+                        <li><i class="bx bx-chevron-right"></i> <a href="${contextPath}/member/login">로그인</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="${contextPath}/member/signUpCheck">회원가입</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><i class="bx bx-chevron-right"></i> <a href="${contextPath}/member/myPage/myReservation">예약 확인</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="${contextPath}/member/myPage/myReview">내 리뷰</a></li>
+                    </c:otherwise>
+                </c:choose>
             </ul>
             </div>
             

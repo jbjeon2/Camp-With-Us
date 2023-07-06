@@ -9,7 +9,6 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-
         <title>로그인</title>
 
         <link rel="stylesheet" href="${contextPath}/resources/css/login.css">
@@ -87,14 +86,10 @@
                     &ensp;&ensp;&ensp;&ensp;&ensp;
 
                     <!-- 구글 로그인 -->
-                    <div id="g_id_onload"
-                        data-client_id="286178066358-saj0enkggrgfqm5mafdipok8ml0te2o1.apps.googleusercontent.com"
-                        data-callback="handleCredentialResponse" data-context="signin" data-ux_mode="popup"
-                        data-login_uri="http://localhost:8080/camp/member/login" data-auto_prompt="false">
-                    </div>
-                    
-                    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
-                        data-text="signin_with" data-size="large" data-logo_alignment="right">
+                    <div id="google_id_login" style="text-align:center">
+                        <a href="${contextPath}/member/login/getGoogleAuthUrl">
+                            <img width="200" src="${contextPath}/resources/images/googleBtn.png">
+                        </a>
                     </div>
 
 
@@ -146,101 +141,25 @@
             function showLoginPopup() {
                 let uri = 'https://nid.naver.com/oauth2.0/authorize?' +
                     'response_type=code' +                  // 인증과정에 대한 내부 구분값 code 로 전공 (고정값)
-                    '&client_id=olUvYEgXTwnvQN94ySBM' +     // 발급받은 client_id 를 입력  ( 개인이 직접받아야해요 )
+                    '&client_id=' +     // 발급받은 client_id 를 입력  ( 개인이 직접받아야해요 )
                     '&state=NAVER_LOGIN_TEST' +             // CORS 를 방지하기 위한 특정 토큰값(임의값 사용)
-                    '&redirect_uri=http://3.37.254.218:8080/camp/login/naverLoginSuccess';   // 어플케이션에서 등록했던 CallBack URL를 입력
+                    '&redirect_uri=http://ec2-3-37-254-218.ap-northeast-2.compute.amazonaws.com:8080/camp/login/naverLoginSuccess';   // 어플케이션에서 등록했던 CallBack URL를 입력
 
                 // 사용자가 사용하기 편하게끔 팝업창으로 띄어준다.
                 window.open(uri, "_self", "Naver Login Test PopupScreen", "width=450, height=600");
             }
 
-
-
-            //구글로그인
-            function decodeJwtResponse(token) {
-                var base64Url = token.split('.')[1];
-                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-
-                return JSON.parse(jsonPayload);
-            };
-
-            function handleCredentialResponse(response) {
-                // decodeJwtResponse() is a custom function defined by you
-                // to decode the credential response.
-                const responsePayload = decodeJwtResponse(response.credential);
-                console.log(responsePayload);
-                console.log("ID: " + responsePayload.sub);
-                console.log('Full Name: ' + responsePayload.name);
-                console.log('Given Name: ' + responsePayload.given_name);
-                console.log('Family Name: ' + responsePayload.family_name);
-                console.log("Image URL: " + responsePayload.picture);
-                console.log("Email: " + responsePayload.email);
-
-
-                $.ajax({
-                    url: "googleLoginInfo",
-                    type: "POST",
-                    data: {
-                        "memberNickname": responsePayload.name,
-                        "memberEmail": responsePayload.email
-                    },
-
-                    success: function (result) {
-                        if (result > 0) {
-                            alert("이미 가입된 아이디입니다.");
-                            window.location.href = '${contextPath}/member/login';
-                        } else {
-                            // window.location.href = history.back();
-                            location.href = document.referrer;
-                            //location.reload();
-                            
-                            
-                        }
-                       
-                        
-                    },
-                    error: function () {
-
-                    }
-                });
-
-                
-                // location.reload();
-                // location.reload();
-                // location.reload();
-                // location.reload();
-
-                // window.location.href = '${contextPath}';
-
-                // 1초(1000ms) 후에 location.reload() 실행
-                // setTimeout(function() {
-                // location.reload();
-                // }, 1000);
-
-            }
-
-            /*         구글로그아웃 -- 주석처리함.
-                    function signOut() {
-                        var auth2 = gapi.auth2.getAuthInstance();
-                        auth2.signOut().then(function () {
-                        console.log('User signed out.');
-                        });
-                        };
-                */
         </script>
 
         <!-- 카카오 로그인 -->
         <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js"
-            integrity="sha384-x+WG2i7pOR+oWb6O5GV5f1KN2Ko6N7PTGPS7UlasYWNxZMKQA63Cj/B2lbUmUfuC"
+            integrity=""
             crossorigin="anonymous"></script>
         <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
         <script>
             //카카오로그인
-            Kakao.init('9bf493951641e18dccd9f2901ddd2f54'); //발급받은 키 중 javascript키를 사용해준다.
+            Kakao.init(''); //발급받은 키 중 javascript키를 사용해준다.
             console.log("Kakao.isInitialized : " + Kakao.isInitialized()); // sdk초기화여부판단
 
             function kakaoLogin() {
@@ -266,15 +185,17 @@
                                     },
 
                                     success: function (result) {
-                                        if (result > 0) {
+                                        if (result == 2) {
                                             alert("이미 가입된 아이디입니다.");
                                             window.location.href = '${contextPath}/member/login';
-                                        } else {
+                                        } else if(result == 0) {
                                             // window.location.href = history.go(-1);
+                                            alert("환영합니다. 회원가입이 완료되었습니다.");
                                             location.href = document.referrer;
                                             //window.location.reload();
-                                        }
-                                    
+                                        } else{
+                                            location.href = document.referrer;
+                                        }                                    
 
                                         if (Kakao.Auth.getAccessToken()) {
                                             Kakao.API.request({
