@@ -267,86 +267,6 @@ public class BoardController {
 
 
 	// summernote 업로드 이미지 저장을 위한 컨트롤러
-//	@RequestMapping(value="/upload", produces = "application/json; charset=utf8")
-//	@ResponseBody  // ajax 응답 시 사용!
-//	public String uploadSummernoteImageFile( @RequestParam("thumbnail") MultipartFile thumbnail,
-//			@RequestParam(value = "file", required= false) MultipartFile[] multipartFiles,
-//			HttpServletRequest req,
-//			HttpSession session
-//			) {
-//
-//		System.out.println("summernote 컨트롤러 시작");
-//
-//		String webPath = "/resources/images/summernote/";
-//		String folderPath = req.getSession().getServletContext().getRealPath(webPath);
-//		
-//		log.debug(folderPath);
-//		
-//
-//
-//		// thumbnail 사진( = 제일 처음 업로드 되는 사진으로 지정됨)
-//		String thumbnailOriginalFileName = thumbnail.getOriginalFilename();	//오리지날 파일명
-//		String thumbnailExtension = thumbnailOriginalFileName.substring(thumbnailOriginalFileName.lastIndexOf("."));	//파일 확장자
-//		String thumbnailSavedFileName = UUID.randomUUID() + thumbnailExtension;	//저장될 파일 명
-//
-//		File thumbnailFile = new File(folderPath + thumbnailSavedFileName);
-//
-//		log.debug("thumbnailFile : " + thumbnailFile);
-//
-//		ArrayList<String> ajaxImgPaths = new ArrayList<>(); // ajax에 보내 줄 이미지 경로를 담을 ArrayList 생성
-//
-//		try {
-//
-//			InputStream fileStream = thumbnail.getInputStream();
-//			FileUtils.copyInputStreamToFile(fileStream, thumbnailFile);	//파일 저장
-//
-//			String imagePath = req.getContextPath() + webPath + thumbnailSavedFileName; // 이미지 경로를 imagePath에 담기
-//
-//			ajaxImgPaths.add(imagePath); // 변수에 담은 이미지 경로를 ArrayList에 추가
-//
-//
-//		} catch (IOException e) {
-//			FileUtils.deleteQuietly(thumbnailFile);	//저장된 파일 삭제
-//			e.printStackTrace();
-//		}
-//
-//
-//		// 나머지 사진들
-//		if(multipartFiles != null) {
-//			for (MultipartFile multipartFile : multipartFiles) {
-//				String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
-//				String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
-//				String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
-//
-//				File targetFile = new File(folderPath + savedFileName);
-//
-//
-//				try {
-//					InputStream fileStream = multipartFile.getInputStream();
-//					FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
-//
-//					String imagePath = req.getContextPath() + webPath + savedFileName; // 이미지 경로 imagePath에 담기
-//
-//					ajaxImgPaths.add(imagePath); // 변수에 담은 이미지 경로를 ArrayList에 추가
-//
-//				} catch (IOException e) {
-//					FileUtils.deleteQuietly(targetFile); //저장된 파일 삭제
-//					e.printStackTrace();
-//				}
-//
-//			}
-//		}
-//
-//
-//		log.debug("imgPaths(ajax 저장경로) : " + ajaxImgPaths);
-//
-//
-//		return new Gson().toJson(ajaxImgPaths); // jsp의 ajax로 ArrayList에 담은 값들 리턴
-//	}
-
-
-	
-	// summernote 업로드 이미지 저장을 위한 컨트롤러
 	@RequestMapping(value="/upload", produces = "application/json; charset=utf8")
 	@ResponseBody  // ajax 응답 시 사용!
 	public String uploadSummernoteImageFile( @RequestParam("thumbnail") MultipartFile thumbnail,
@@ -357,10 +277,10 @@ public class BoardController {
 
 		System.out.println("summernote 컨트롤러 시작");
 
-
-		String fileRoot = "C:\\workspace\\Final_Camp_eunju\\Final_Camp\\summernoteImg\\";	//저장될 외부 파일 경로
-	
+		String webPath = "/resources/images/summernote/";
+		String folderPath = req.getSession().getServletContext().getRealPath(webPath);
 		
+		log.debug(folderPath);
 		
 
 
@@ -369,7 +289,7 @@ public class BoardController {
 		String thumbnailExtension = thumbnailOriginalFileName.substring(thumbnailOriginalFileName.lastIndexOf("."));	//파일 확장자
 		String thumbnailSavedFileName = UUID.randomUUID() + thumbnailExtension;	//저장될 파일 명
 
-		File thumbnailFile = new File(fileRoot + thumbnailSavedFileName);
+		File thumbnailFile = new File(folderPath + thumbnailSavedFileName);
 
 		log.debug("thumbnailFile : " + thumbnailFile);
 
@@ -380,7 +300,7 @@ public class BoardController {
 			InputStream fileStream = thumbnail.getInputStream();
 			FileUtils.copyInputStreamToFile(fileStream, thumbnailFile);	//파일 저장
 
-			String imagePath = "/summernoteImg/" + thumbnailSavedFileName; // 이미지 경로를 imagePath에 담기
+			String imagePath = req.getContextPath() + webPath + thumbnailSavedFileName; // 이미지 경로를 imagePath에 담기
 
 			ajaxImgPaths.add(imagePath); // 변수에 담은 이미지 경로를 ArrayList에 추가
 
@@ -398,14 +318,14 @@ public class BoardController {
 				String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
 				String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
 
-				File targetFile = new File(fileRoot + savedFileName);
+				File targetFile = new File(folderPath + savedFileName);
 
 
 				try {
 					InputStream fileStream = multipartFile.getInputStream();
 					FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
 
-					String imagePath = "/summernoteImg/" + savedFileName; // 이미지 경로 imagePath에 담기
+					String imagePath = req.getContextPath() + webPath + savedFileName; // 이미지 경로 imagePath에 담기
 
 					ajaxImgPaths.add(imagePath); // 변수에 담은 이미지 경로를 ArrayList에 추가
 
@@ -423,6 +343,86 @@ public class BoardController {
 
 		return new Gson().toJson(ajaxImgPaths); // jsp의 ajax로 ArrayList에 담은 값들 리턴
 	}
+
+
+	
+	// summernote 업로드 이미지 저장을 위한 컨트롤러
+//	@RequestMapping(value="/upload", produces = "application/json; charset=utf8")
+//	@ResponseBody  // ajax 응답 시 사용!
+//	public String uploadSummernoteImageFile( @RequestParam("thumbnail") MultipartFile thumbnail,
+//			@RequestParam(value = "file", required= false) MultipartFile[] multipartFiles,
+//			HttpServletRequest req,
+//			HttpSession session
+//			) {
+//
+//		System.out.println("summernote 컨트롤러 시작");
+//
+//
+//		String fileRoot = "C:\\workspace\\Final_Camp_eunju\\Final_Camp\\summernoteImg\\";	//저장될 외부 파일 경로
+//	
+//		
+//		
+//
+//
+//		// thumbnail 사진( = 제일 처음 업로드 되는 사진으로 지정됨)
+//		String thumbnailOriginalFileName = thumbnail.getOriginalFilename();	//오리지날 파일명
+//		String thumbnailExtension = thumbnailOriginalFileName.substring(thumbnailOriginalFileName.lastIndexOf("."));	//파일 확장자
+//		String thumbnailSavedFileName = UUID.randomUUID() + thumbnailExtension;	//저장될 파일 명
+//
+//		File thumbnailFile = new File(fileRoot + thumbnailSavedFileName);
+//
+//		log.debug("thumbnailFile : " + thumbnailFile);
+//
+//		ArrayList<String> ajaxImgPaths = new ArrayList<>(); // ajax에 보내 줄 이미지 경로를 담을 ArrayList 생성
+//
+//		try {
+//
+//			InputStream fileStream = thumbnail.getInputStream();
+//			FileUtils.copyInputStreamToFile(fileStream, thumbnailFile);	//파일 저장
+//
+//			String imagePath = "/summernoteImg/" + thumbnailSavedFileName; // 이미지 경로를 imagePath에 담기
+//
+//			ajaxImgPaths.add(imagePath); // 변수에 담은 이미지 경로를 ArrayList에 추가
+//
+//
+//		} catch (IOException e) {
+//			FileUtils.deleteQuietly(thumbnailFile);	//저장된 파일 삭제
+//			e.printStackTrace();
+//		}
+//
+//
+//		// 나머지 사진들
+//		if(multipartFiles != null) {
+//			for (MultipartFile multipartFile : multipartFiles) {
+//				String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
+//				String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
+//				String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
+//
+//				File targetFile = new File(fileRoot + savedFileName);
+//
+//
+//				try {
+//					InputStream fileStream = multipartFile.getInputStream();
+//					FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
+//
+//					String imagePath = "/summernoteImg/" + savedFileName; // 이미지 경로 imagePath에 담기
+//
+//					ajaxImgPaths.add(imagePath); // 변수에 담은 이미지 경로를 ArrayList에 추가
+//
+//				} catch (IOException e) {
+//					FileUtils.deleteQuietly(targetFile); //저장된 파일 삭제
+//					e.printStackTrace();
+//				}
+//
+//			}
+//		}
+//
+//
+//		log.debug("imgPaths(ajax 저장경로) : " + ajaxImgPaths);
+//
+//
+//		return new Gson().toJson(ajaxImgPaths); // jsp의 ajax로 ArrayList에 담은 값들 리턴
+//	}
 
 
 
