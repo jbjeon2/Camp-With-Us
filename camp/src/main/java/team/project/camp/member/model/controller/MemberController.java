@@ -58,8 +58,8 @@ public class MemberController {
 	private String googleAuthUrl = "https://oauth2.googleapis.com";
     private String googleLoginUrl = "https://accounts.google.com";
     private String googleRedirectUrl = "http://ec2-3-37-254-218.ap-northeast-2.compute.amazonaws.com:8080/camp/member/login/oauth_google_check";
-    private String googleClientId = "";
-    private String googleClientSecret = "";
+    private String googleClientId = "286178066358-saj0enkggrgfqm5mafdipok8ml0te2o1.apps.googleusercontent.com";
+    private String googleClientSecret = "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";
 	
 	
 	@GetMapping("/login")
