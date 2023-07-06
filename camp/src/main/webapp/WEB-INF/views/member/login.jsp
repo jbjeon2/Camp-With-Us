@@ -141,7 +141,7 @@
             function showLoginPopup() {
                 let uri = 'https://nid.naver.com/oauth2.0/authorize?' +
                     'response_type=code' +                  // 인증과정에 대한 내부 구분값 code 로 전공 (고정값)
-                    '&client_id=olUvYEgXTwnvQN94ySBM' +     // 발급받은 client_id 를 입력  ( 개인이 직접받아야해요 )
+                    '&client_id=' +     // 발급받은 client_id 를 입력  ( 개인이 직접받아야해요 )
                     '&state=NAVER_LOGIN_TEST' +             // CORS 를 방지하기 위한 특정 토큰값(임의값 사용)
                     '&redirect_uri=http://ec2-3-37-254-218.ap-northeast-2.compute.amazonaws.com:8080/camp/login/naverLoginSuccess';   // 어플케이션에서 등록했던 CallBack URL를 입력
 
@@ -153,13 +153,13 @@
 
         <!-- 카카오 로그인 -->
         <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js"
-            integrity="sha384-x+WG2i7pOR+oWb6O5GV5f1KN2Ko6N7PTGPS7UlasYWNxZMKQA63Cj/B2lbUmUfuC"
+            integrity=""
             crossorigin="anonymous"></script>
         <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
         <script>
             //카카오로그인
-            Kakao.init('9bf493951641e18dccd9f2901ddd2f54'); //발급받은 키 중 javascript키를 사용해준다.
+            Kakao.init(''); //발급받은 키 중 javascript키를 사용해준다.
             console.log("Kakao.isInitialized : " + Kakao.isInitialized()); // sdk초기화여부판단
 
             function kakaoLogin() {
@@ -185,15 +185,17 @@
                                     },
 
                                     success: function (result) {
-                                        if (result > 0) {
+                                        if (result == 2) {
                                             alert("이미 가입된 아이디입니다.");
                                             window.location.href = '${contextPath}/member/login';
-                                        } else {
+                                        } else if(result == 0) {
                                             // window.location.href = history.go(-1);
+                                            alert("환영합니다. 회원가입이 완료되었습니다.");
                                             location.href = document.referrer;
                                             //window.location.reload();
-                                        }
-                                    
+                                        } else{
+                                            location.href = document.referrer;
+                                        }                                    
 
                                         if (Kakao.Auth.getAccessToken()) {
                                             Kakao.API.request({

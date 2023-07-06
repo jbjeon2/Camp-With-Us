@@ -212,7 +212,7 @@ function requestPay() {
         }else if(checkedValue === "card"){
                 
                 var IMP = window.IMP;
-                IMP.init("imp66352643");
+                IMP.init("");
                 IMP.request_pay({
                     pg: 'kcp.A52CY',
                     pay_method: 'card',

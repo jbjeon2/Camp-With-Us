@@ -57,7 +57,7 @@ public class MemberController {
 
 	private String googleAuthUrl = "https://oauth2.googleapis.com";
     private String googleLoginUrl = "https://accounts.google.com";
-    private String googleRedirectUrl = "http://localhost:8080/camp/member/login/oauth_google_check";
+    private String googleRedirectUrl = "http://ec2-3-37-254-218.ap-northeast-2.compute.amazonaws.com:8080/camp/member/login/oauth_google_check";
     private String googleClientId = "";
     private String googleClientSecret = "";
 	
@@ -202,7 +202,7 @@ public class MemberController {
     public String oauth_google_check(HttpServletRequest request,
                                      @RequestParam(value = "code") String authCode,
                                      HttpServletRequest req,
-                                     Model model,
+                                     Model model, RedirectAttributes ra,
                                      HttpServletResponse response) throws Exception{
 
         //2.구글에 등록된 레드망고 설정정보를 보내어 약속된 토큰을 받위한 객체 생성
@@ -274,7 +274,7 @@ public class MemberController {
 				logger.info("구글 로그인 정보 DB 삽입 성공");
 				Member googleLoginMember2 = service.googleLogin(member);
 				model.addAttribute("loginMember", googleLoginMember2);
-				
+				ra.addFlashAttribute("message", "환영합니다. 회원가입이 완료되었습니다.");
 			}else {
 				logger.info("구글 로그인 정보 DB 삽입 실패");
 			}
@@ -331,6 +331,7 @@ public class MemberController {
 				logger.info("카카오 로그인 정보 DB 삽입 성공");
 				Member kakaoLoginMember2 = service.googleKakaoLogin(googleKakaoMember);
 				model.addAttribute("loginMember", kakaoLoginMember2);
+				
 				loginCheck = 0;
 				return loginCheck;
 			}else {
@@ -343,11 +344,11 @@ public class MemberController {
 
 				logger.info("기존 로그인 실행 ");
 				model.addAttribute("loginMember", kakaoLoginMember);
-				loginCheck = 0;
+				loginCheck = 1;
 				return loginCheck;
 			} else {
 				logger.info("중복회원입니다.");
-				loginCheck = 1;
+				loginCheck = 2;
 				return loginCheck;
 			}
 		}
@@ -467,7 +468,7 @@ public class MemberController {
 	    	"<p>안녕하세요 고객님!<br>발급된 임시 비밀번호는"
 	    	+ randomPassword
 	    	+"입니다.<br>로그인하고 비밀번호를 변경해주세요.</p>"; //본문
-	    String from = "camping@camp.com"; //보내는사람 이메일주소
+	    String from = "campwithus@gmail.com"; //보내는사람 이메일주소
 	    String to = memberEmail;
 
 	    try {

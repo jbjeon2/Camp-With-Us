@@ -45,7 +45,7 @@ console.log(loc3)
 console.log(doNm)
 $.getJSON(
           "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey="
-          +"jsLvGH%2Bb1syQWRRY0c2N5F%2FcD%2FwCpP81UAeg5oSlnbCS53y8grp2iAkZRGCIRSajwn%2F%2FFIpN5BCIIbK1u8Jajw%3D%3D&pageNo=1"
+          +"키&pageNo=1"
           +"&numOfRows=10&dataType=JSON&regId="+loc3+"&tmFc="+formattedDate+"0600",
           function(result){
                   

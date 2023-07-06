@@ -45,8 +45,8 @@
                         <li><i class="bx bx-chevron-right"></i> <a href="${contextPath}/member/signUpCheck">회원가입</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><i class="bx bx-chevron-right"></i> <a href="${contextPath}/member/mypage/myReservation">예약 확인</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="${contextPath}/member/mypage/myReview">회원 정보 수정</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="${contextPath}/member/myPage/myReservation">예약 확인</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="${contextPath}/member/myPage/myReview">내 리뷰</a></li>
                     </c:otherwise>
                 </c:choose>
             </ul>
