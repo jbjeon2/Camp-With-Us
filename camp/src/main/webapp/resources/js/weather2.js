@@ -137,7 +137,7 @@ function loc6(){
 }
 const loc7 = loc6();
 
-$.getJSON('http://api.openweathermap.org/data/2.5/forecast?lat='+loc5[0]+'&lon='+loc5[1]+'&appid=0c9dcdd64eb8f13b6843c1ec3e1ab4f5&units=metric', function(result){
+$.getJSON('http://api.openweathermap.org/data/2.5/forecast?lat='+loc5[0]+'&lon='+loc5[1]+'&appid=키&units=metric', function(result){
           
     //당일오전
 //   const firstAm = result.list[0].weather[0].id

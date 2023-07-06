@@ -67,8 +67,10 @@ public class CampDetailController {
 
 		if(month.equals("6") || month.equals("7") || month.equals("8")) {	//성수기인 경우
 			price = service.selectPriceP(month);
+			log.info("성수기");
 		}else {	//비성수기인 경우
 			price = service.selectPriceNp(month);
+			log.info("비성수기");
 		}
 
 		return price;

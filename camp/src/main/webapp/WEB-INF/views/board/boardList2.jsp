@@ -195,6 +195,10 @@
     </div>
 
 
+    <script>
+        const contextPath="${contextPath}";
+    </script>
+
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 

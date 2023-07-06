@@ -111,7 +111,7 @@
                                     '<td>'+
                                         "<img class='list-thumbnail' src='" + contextPath + item.thumbnail + "'>" + 
                                         // http://localhost:8080/camp/board/detail/3/561?cp=1
-                                        "<a href='http://localhost:8080/camp/board/detail/" + item.boardCode + "/" + item.boardNo + "?cp=" + currentPage + "'>" + item.boardTitle + "</a>" +                                                             
+                                        "<a href='${contextPath}/board/detail/" + item.boardCode + "/" + item.boardNo + "?cp=" + currentPage + "'>" + item.boardTitle + "</a>" +                                                             
                                     '</td>' + 
                                     '<td>' + item.memberNickname + '</td>' + 
                                     '<td>' + item.createDate + '</td>' + 
@@ -127,7 +127,7 @@
                                     '<td>' + item.boardNo +'</td>' +
                                     '<td>'+
                                         // http://localhost:8080/camp/board/detail/3/561?cp=1
-                                        "<a href='http://localhost:8080/camp/board/detail/" + item.boardCode + "/" + item.boardNo + "?cp=" + currentPage + "'>" + item.boardTitle + "</a>" +                                                             
+                                        "<a href='${contextPath}/board/detail/" + item.boardCode + "/" + item.boardNo + "?cp=" + currentPage + "'>" + item.boardTitle + "</a>" +                                                             
                                     '</td>' + 
                                     '<td>' + item.memberNickname + '</td>' + 
                                     '<td>' + item.createDate + '</td>' + 

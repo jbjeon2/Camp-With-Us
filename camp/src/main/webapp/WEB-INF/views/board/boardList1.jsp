@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
+        
         <!-- 파비콘 오류 해결 : GET http://localhost:8080/favicon.ico 404 -->
         <link rel="icon" href="data:;base64,iVBORw0KGgo=">
         
@@ -44,7 +44,7 @@
     <!-- JavaScript용 Facebook SDK 정규식 추가 -->
 
     <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v17.0&appId=804019604627586&autoLogAppEvents=1" nonce="Ch1e3BJs"></script>
+<script async defer crossorigin="anonymous" src="" nonce="Ch1e3BJs"></script>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
@@ -149,10 +149,14 @@
         </div> <!-- sideBar 넣기위한 div 끝부분 !!!  -->
     </main>
     
-    
+ 
     
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 
+
+    <script>
+        const contextPath="${contextPath}";
+    </script>
     <script src="https://kit.fontawesome.com/a2e8ca0ae3.js" crossorigin="anonymous"></script>
 
     <script src="${contextPath}/resources/js/board/board.js"></script>
@@ -221,7 +225,7 @@
         });
     </script> -->
 
-
+    
 </body>
 
 

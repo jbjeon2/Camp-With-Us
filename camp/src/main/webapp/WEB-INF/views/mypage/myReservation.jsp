@@ -179,6 +179,10 @@
 
                 <script>
                     var reservNos = [];
+                 
+
+                    const contextPath = "${contextPath}";
+
 
                     <c:forEach var="reservation" items="${reservationList}">
                         reservNos.push("${reservation.reservNo}");

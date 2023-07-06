@@ -71,13 +71,13 @@
 
                         <div class="signName">* 비밀번호</div>
                         <div class="signUp-input-area form-floating mb-3">
-                            <input  type="text" class="form-control" id="memberPw" name="memberPw"
+                            <input  type="password" class="form-control" id="memberPw" name="memberPw"
                                     placeholder="비밀번호" maxlength="30">
                             <label for="memberPw">PassWord</label>
                          </div>
         
                         <div class="signUp-input-area form-floating mb-3">
-                            <input type="text" class="form-control" id="memberPwConfirm" name="memberPwConfirm"
+                            <input type="password" class="form-control" id="memberPwConfirm" name="memberPwConfirm"
                                     placeholder="비밀번호 확인" maxlength="30">
                                     <label for="memberPwConfirm">PassWord Confirm</label> 
                         </div>

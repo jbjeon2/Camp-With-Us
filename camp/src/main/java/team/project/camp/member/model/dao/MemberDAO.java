@@ -139,4 +139,15 @@ public class MemberDAO {
 	}
 
 
+	public Member googleLogin(Member member) {
+		Member googleLoginMember = sqlSession.selectOne("memberMapper.googleKakaoLogin", member);
+		return googleLoginMember;
+	}
+
+
+	public int googleEmailCheck(Member member) {
+		return sqlSession.selectOne("memberMapper.googleKakaoEmailCheck", member);
+	}
+
+
 }

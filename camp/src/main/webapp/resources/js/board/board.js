@@ -1,7 +1,6 @@
 
 
 
-
 // 상세조회, 게시글 작성 - 목록으로 버튼
 
 // 즉시 실행 함수
@@ -201,30 +200,50 @@ window.onload = function() {
 
     for(let i=0; i<boardContent.length; i++) {
         if(boardContent[i].innerText.length > 60) {
-            boardContent[i].innerText = boardContent[i].innerText.substring(0, 60)+".....더보기";
+            boardContent[i].innerText = boardContent[i].innerText.substring(0, 45)+".....더보기";
         }
     }
 
 }
 }
 
+var contextPath2 = contextPath;
 
 const myPageList = document.getElementsByClassName("myPage-listBoard");
 
-if(myPageList.length == 5) {
+/* if(myPageList.length == 5) {
+   
     
-    if(window.location.href == "http://localhost:8080/camp/board/list/1") {
+    if(window.location.href == contextPath+"/board/list/1") {
         myPageList[0].style.backgroundColor = "#e9ecef";
-    } else if(window.location.href == "http://localhost:8080/camp/board/list/2") {
+    } else if(window.location.href == contextPath+"/board/list/2") {
         myPageList[1].style.backgroundColor = "#e9ecef";
-    } else if(window.location.href == "http://localhost:8080/camp/board/list/3") {
+    } else if(window.location.href == contextPath+"/board/list/3") {
         myPageList[2].style.backgroundColor = "#e9ecef";
-    } else if(window.location.href == "http://localhost:8080/camp/board/list/4") {
+    } else if(window.location.href == contextPath+"/board/list/4") {
         myPageList[3].style.backgroundColor = "#e9ecef";
-    } else if(window.location.href == "http://localhost:8080/camp/board/list/5") {
+    } else if(window.location.href == contextPath+"/board/list/5") {
         myPageList[4].style.backgroundColor = "#e9ecef";
     } 
-} 
+}  */
+if (myPageList.length == 5) {
+    var currentURL = window.location.href;
+    if (currentURL.endsWith(contextPath2 + "/board/list/1")) {
+        myPageList[0].style.backgroundColor = "#e9ecef";
+    } else if (currentURL.endsWith(contextPath2 + "/board/list/2")) {
+        myPageList[1].style.backgroundColor = "#e9ecef";
+    } else if (currentURL.endsWith(contextPath2 + "/board/list/3")) {
+        myPageList[2].style.backgroundColor = "#e9ecef";
+    } else if (currentURL.endsWith(contextPath2 + "/board/list/4")) {
+        myPageList[3].style.backgroundColor = "#e9ecef";
+    } else if (currentURL.endsWith(contextPath2 + "/board/list/5")) {
+        myPageList[4].style.backgroundColor = "#e9ecef";
+    }
+}
+
+
+
+
 
 
 
